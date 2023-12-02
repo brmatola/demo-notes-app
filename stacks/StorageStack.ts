@@ -1,7 +1,15 @@
 import { Bucket, StackContext, Table } from 'sst/constructs'
 
 export function StorageStack({ stack }: StackContext) {
-    const bucket = new Bucket(stack, 'Uploads')
+    const bucket = new Bucket(stack, 'Uploads', {
+        cors: [
+            {
+                maxAge: '1 day',
+                allowedOrigins: ['*'],
+                allowedMethods: ['GET', 'PUT', 'DELETE', 'HEAD']
+            }
+        ]
+    })
 
     const table = new Table(stack, 'Notes', {
         fields: {
